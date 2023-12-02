@@ -15,7 +15,7 @@ from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCard
                             ToolTipPosition, PrimaryPushSettingCard, InfoBar, InfoBarPosition, PushButton, TitleLabel, 
                             OptionsSettingCard, HyperlinkCard, PushSettingCard,FluentWindow,FluentIcon,Theme,setTheme,
                             Action,RoundMenu,NavigationItemPosition,NavigationAvatarWidget,StrongBodyLabel,BodyLabel,
-                            ToolTipFilter,TitleLabel,SplashScreen,SimpleCardWidget,Flyout,InfoBarIcon,LineEdit)
+                            ToolTipFilter,TitleLabel,SplashScreen,SimpleCardWidget,Flyout,InfoBarIcon,LineEdit,MessageBox)
 
 from interfaces.sort_interface.matplotlibfigure import MatplotlibFigure
 
@@ -52,6 +52,7 @@ class EasySort(SimpleCardWidget):
         self.ButtonvBoxLayout = QVBoxLayout()
         self.samplesLabelhBoxLayout = QHBoxLayout()
         self.sleeptimeLabelhBoxLayout = QHBoxLayout()
+        #实例化画布
         self.canvas = MatplotlibFigure(width=5, heigh=4, dpi=100)
         #按钮信号与槽
         self.RandomButton.clicked.connect(self.onClickedRandomButton)
@@ -110,6 +111,7 @@ class EasySort(SimpleCardWidget):
         
     def onClickedBubbleSortButton(self):
         #冒泡排序
+        self.showMessageBox('冒泡排序','冒泡排序的时间复杂度为O(n^2)，请耐心等待')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         if not len(self.data) == 0:
@@ -123,6 +125,7 @@ class EasySort(SimpleCardWidget):
                         
     def onClickedSelectionSortButton(self):
         #选择排序
+        self.showMessageBox('选择排序','选择排序的时间复杂度为O(n^2)，请耐心等待')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         if not len(self.data) == 0:
@@ -162,7 +165,7 @@ class EasySort(SimpleCardWidget):
         self.BubbleSortButton.setEnabled(True)
         self.backDataButton.setEnabled(True)
         
-    def darwEvent(self, changeColorDir={} -> typing.Dict[int,str]):
+    def darwEvent(self, changeColorDir={}):
         #根据传入的字典改变颜色并刷新画布
         self.color = ['darkviolet']*len(self.data)
         for i in changeColorDir.keys():
@@ -174,6 +177,8 @@ class EasySort(SimpleCardWidget):
         self.canvas.flush_events()
         sleep(self.sleeptime)
         
-        
-        
-        
+    def showMessageBox(self,title,content):
+        #显示消息框
+        w = MessageBox(title, content, self.window())
+        while not w.exec():
+            pass

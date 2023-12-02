@@ -15,7 +15,7 @@ from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCard
                             ToolTipPosition, PrimaryPushSettingCard, InfoBar, InfoBarPosition, PushButton, TitleLabel, 
                             OptionsSettingCard, HyperlinkCard, PushSettingCard,FluentWindow,FluentIcon,Theme,setTheme,
                             Action,RoundMenu,NavigationItemPosition,NavigationAvatarWidget,StrongBodyLabel,BodyLabel,
-                            ToolTipFilter,TitleLabel,SplashScreen,SimpleCardWidget,Flyout,InfoBarIcon,LineEdit)
+                            ToolTipFilter,TitleLabel,SplashScreen,SimpleCardWidget,Flyout,InfoBarIcon,LineEdit, MessageBox)
 
 from interfaces.sort_interface.matplotlibfigure import MatplotlibFigure
 
@@ -45,7 +45,6 @@ class AdvancedSort(SimpleCardWidget):
         self.sleeptimeLineEdit = LineEdit(self)
         self.sleeptimeLineEdit.setText("0.1")
         
-        self.canvas = MatplotlibFigure(width=5, heigh=4, dpi=100)
         self.quickSortButton = PushButton("快速排序")
         self.mergeSortButton = PushButton("归并排序")
         self.heapSortButton = PushButton("堆排序")
@@ -54,6 +53,8 @@ class AdvancedSort(SimpleCardWidget):
         self.ButtonvBoxLayout = QVBoxLayout()
         self.samplesLabelhBoxLayout = QHBoxLayout()
         self.sleeptimeLabelhBoxLayout = QHBoxLayout()
+        #实例化画布
+        self.canvas = MatplotlibFigure(width=5, heigh=4, dpi=100)
         #按钮信号与槽
         self.RandomButton.clicked.connect(self.onClickedRandomButton)
         self.backDataButton.clicked.connect(self.onClickedBackDataButton)
@@ -147,19 +148,28 @@ class AdvancedSort(SimpleCardWidget):
         sleep(self.sleeptime)
         
     def onClickedQuickSortButton(self):
+        self.showMessageBox('快速排序','快速排序的时间复杂度为O(nlogn)，请耐心等待')
         self.prohibitWidget()
         #快速排序
         pass
         self.enableWidget()
         
     def onClickedMergeSortButton(self):
+        self.showMessageBox('归并排序','归并排序的时间复杂度为O(nlogn)，请耐心等待')
         self.prohibitWidget()
         #归并排序
         pass
         self.enableWidget()
     
     def onClickedHeapSortButton(self):
+        self.showMessageBox('堆排序','堆排序的时间复杂度为O(nlogn)，请耐心等待')
         self.prohibitWidget()
         #堆排序
         pass
         self.enableWidget()
+        
+    def showMessageBox(self,title,content):
+        #显示消息框
+        w = MessageBox(title, content, self.window())
+        while not w.exec():
+            pass
