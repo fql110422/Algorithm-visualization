@@ -34,14 +34,20 @@ class EasySort(SimpleCardWidget):
         self.hBoxLayout = QHBoxLayout()
         self.Label = TitleLabel("简单排序")
         self.RandomButton = PushButton("随机生成数字")
+        self.samplesLaebl = BodyLabel(self)
+        self.samplesLaebl.setText("样本数:")
         self.samplesLineEdit = LineEdit(self)
         self.samplesLineEdit.setText("20")
+        self.sleeptimeLabel = BodyLabel(self)
+        self.sleeptimeLabel.setText("延时:")
         self.sleeptimeLineEdit = LineEdit(self)
-        self.sleeptimeLineEdit.setText("0.5")
+        self.sleeptimeLineEdit.setText("0.1")
         self.backDataButton = PushButton("还原数据")
         self.SelectionSortButton = PushButton("选择排序")
         self.BubbleSortButton = PushButton("冒泡排序")
         self.ButtonvBoxLayout = QVBoxLayout()
+        self.samplesLabelhBoxLayout = QHBoxLayout()
+        self.sleeptimeLabelhBoxLayout = QHBoxLayout()
         self.canvas = MatplotlibFigure(width=5, heigh=4, dpi=100)
         
         self.RandomButton.clicked.connect(self.onClickedRandomButton)
@@ -64,9 +70,14 @@ class EasySort(SimpleCardWidget):
         self.hBoxLayout.addWidget(self.canvas)
         self.hBoxLayout.addLayout(self.ButtonvBoxLayout)
         
+        self.samplesLabelhBoxLayout.addWidget(self.samplesLaebl)
+        self.samplesLabelhBoxLayout.addWidget(self.samplesLineEdit)
+        self.sleeptimeLabelhBoxLayout.addWidget(self.sleeptimeLabel)
+        self.sleeptimeLabelhBoxLayout.addWidget(self.sleeptimeLineEdit)
+        
         self.ButtonvBoxLayout.addWidget(self.RandomButton,0,Qt.AlignTop)
-        self.ButtonvBoxLayout.addWidget(self.samplesLineEdit,0,Qt.AlignTop)
-        self.ButtonvBoxLayout.addWidget(self.sleeptimeLineEdit,0,Qt.AlignTop)
+        self.ButtonvBoxLayout.addLayout(self.samplesLabelhBoxLayout)
+        self.ButtonvBoxLayout.addLayout(self.sleeptimeLabelhBoxLayout)
         self.ButtonvBoxLayout.addWidget(self.backDataButton,0,Qt.AlignTop)
         self.ButtonvBoxLayout.addWidget(self.SelectionSortButton,0,Qt.AlignTop)
         self.ButtonvBoxLayout.addWidget(self.BubbleSortButton,0,Qt.AlignTop)
@@ -98,18 +109,10 @@ class EasySort(SimpleCardWidget):
         if not len(self.data) == 0:
             for i in range(len(self.data)):
                 for j in range(len(self.data)-i-1):
-                    self.color = ['darkviolet']*len(self.data)
-                    self.color[j] = 'green'
-                    self.color[j+1] = 'red'
-                    self.darwEvent()
-                    sleep(self.sleeptime)
+                    self.darwEvent({j:'green',j+1:'red'})
                     if self.data[j] > self.data[j+1]:
                         self.data[j],self.data[j+1] = self.data[j+1],self.data[j]
-                        self.color[j] = 'red'
-                        self.color[j+1] = 'green'
-                        self.darwEvent()
-                        sleep(self.sleeptime)
-                    
+                        self.darwEvent({j:'red',j+1:'green'})       
         self.enableWidget()
                         
     def onClickedSelectionSortButton(self):
@@ -119,23 +122,14 @@ class EasySort(SimpleCardWidget):
         if not len(self.data) == 0:
             for i in range(len(self.data)):
                 minIndex = i
-                self.color = ['darkviolet']*len(self.data)
-                self.color[minIndex] = 'green'
-                self.darwEvent()
-                sleep(self.sleeptime)
+                self.darwEvent({minIndex:'green'})
                 for j in range(i+1,len(self.data)):
                     self.color = ['darkviolet']*len(self.data)
-                    self.color[minIndex] = 'green'
-                    self.color[j] = 'red'
-                    self.darwEvent()
-                    sleep(self.sleeptime)
+                    self.darwEvent({minIndex:'green',j:'red'})
                     if self.data[j] < self.data[minIndex]:
                         minIndex = j
                 self.data[i],self.data[minIndex] = self.data[minIndex],self.data[i]
-                self.color[i] = 'red'
-                self.color[minIndex] = 'green'
-                self.darwEvent()
-                sleep(self.sleeptime)
+                self.darwEvent({minIndex:'green',i:'red'})
         self.enableWidget()
         
     def onClickedBackDataButton(self):
@@ -154,16 +148,23 @@ class EasySort(SimpleCardWidget):
         self.backDataButton.setEnabled(False)
         
     def enableWidget(self):
+        self.darwEvent() #排序完成后将所有颜色还原
         self.RandomButton.setEnabled(True)
         self.SelectionSortButton.setEnabled(True)
         self.BubbleSortButton.setEnabled(True)
         self.backDataButton.setEnabled(True)
         
-    def darwEvent(self):
+    def darwEvent(self,changeColorDir={}):
+        self.color = ['darkviolet']*len(self.data)
+        for i in changeColorDir.keys():
+            self.color[i] = changeColorDir[i]
+        
         self.canvas.axes.clear()
         self.canvas.axes.bar(range(len(self.data)),self.data,color=self.color)
         self.canvas.draw()
         self.canvas.flush_events()
+        sleep(self.sleeptime)
+        
         
         
         

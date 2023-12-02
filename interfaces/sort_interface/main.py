@@ -16,8 +16,8 @@ from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCard
                             ToolTipFilter,TitleLabel,SplashScreen)
 
 from interfaces.gallery_interface.main import GalleryInterface
-from interfaces.sort_interface.matplotlibfigure import MatplotlibFigure
 from interfaces.sort_interface.easysort import EasySort
+from interfaces.sort_interface.advancedsort import AdvancedSort
 
 class SortInterface(GalleryInterface):
     def __init__(self, parent=None):
@@ -25,6 +25,8 @@ class SortInterface(GalleryInterface):
         self.setObjectName('SortInterface')
         self.view = QWidget()
 
+        self.segmentWidget = SegmentedWidget(self.view)
+        self.stackWidget = QStackedWidget(self.view)
         
         self.initWidget()
         self.initLayout()
@@ -32,9 +34,26 @@ class SortInterface(GalleryInterface):
         
     def initWidget(self):
         self.easySort = EasySort(self)
+        self.advancedSort = AdvancedSort(self)
+        
+        self.segmentWidget.addItem(
+            routeKey="easySort",
+            text="简单排序",
+            onClick=lambda: self.stackWidget.setCurrentWidget(self.easySort)
+        )
+        
+        self.segmentWidget.addItem(
+            routeKey="advancedSort",
+            text="进阶排序",
+            onClick=lambda: self.stackWidget.setCurrentWidget(self.advancedSort)
+        )
+        self.segmentWidget.setCurrentItem("easySort")
+        self.stackWidget.addWidget(self.easySort)
+        self.stackWidget.addWidget(self.advancedSort)
     
     def initLayout(self):
-        self.vBoxLayout.addWidget(self.easySort)
+        self.vBoxLayout.addWidget(self.segmentWidget)
+        self.vBoxLayout.addWidget(self.stackWidget)
         
     def initStyle(self):
         self.setStyleSheet(
