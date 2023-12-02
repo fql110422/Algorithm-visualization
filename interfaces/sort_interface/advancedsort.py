@@ -25,32 +25,36 @@ class AdvancedSort(SimpleCardWidget):
         self.setObjectName('AdvancedSort')
         self.Layout = QVBoxLayout()
         self.setLayout(self.Layout)
-        
+        #初始化数据
         self.data = []
         self.lastdata = []
         self.color = []
         self.sleeptime = 0
-        
-        self.hBoxLayout = QHBoxLayout()
+        #标题及按钮实例化
         self.Label = TitleLabel("进阶排序")
         self.RandomButton = PushButton("随机生成数字")
+        self.backDataButton = PushButton("还原数据")
+        
         self.samplesLaebl = BodyLabel(self)
         self.samplesLaebl.setText("样本数:")
         self.samplesLineEdit = LineEdit(self)
         self.samplesLineEdit.setText("20")
+        
         self.sleeptimeLabel = BodyLabel(self)
         self.sleeptimeLabel.setText("延时:")
         self.sleeptimeLineEdit = LineEdit(self)
         self.sleeptimeLineEdit.setText("0.1")
-        self.backDataButton = PushButton("还原数据")
+        
         self.canvas = MatplotlibFigure(width=5, heigh=4, dpi=100)
         self.quickSortButton = PushButton("快速排序")
         self.mergeSortButton = PushButton("归并排序")
         self.heapSortButton = PushButton("堆排序")
+        #布局
+        self.hBoxLayout = QHBoxLayout()
         self.ButtonvBoxLayout = QVBoxLayout()
         self.samplesLabelhBoxLayout = QHBoxLayout()
         self.sleeptimeLabelhBoxLayout = QHBoxLayout()
-        
+        #按钮信号与槽
         self.RandomButton.clicked.connect(self.onClickedRandomButton)
         self.backDataButton.clicked.connect(self.onClickedBackDataButton)
         self.quickSortButton.clicked.connect(self.onClickedQuickSortButton)
@@ -65,6 +69,7 @@ class AdvancedSort(SimpleCardWidget):
         pass
     
     def initLayout(self):
+        #布局初始化
         self.Layout.addWidget(self.Label)
         self.Layout.addLayout(self.hBoxLayout)
         
@@ -113,6 +118,7 @@ class AdvancedSort(SimpleCardWidget):
         self.data = self.lastdata.copy()
         
     def prohibitWidget(self):
+        #禁用按钮
         self.RandomButton.setEnabled(False)
         self.quickSortButton.setEnabled(False)
         self.mergeSortButton.setEnabled(False)
@@ -120,6 +126,7 @@ class AdvancedSort(SimpleCardWidget):
         self.backDataButton.setEnabled(False)
         
     def enableWidget(self):
+        #启用按钮
         self.darwEvent() #还原颜色
         self.RandomButton.setEnabled(True)
         self.quickSortButton.setEnabled(True)
@@ -128,6 +135,7 @@ class AdvancedSort(SimpleCardWidget):
         self.backDataButton.setEnabled(True)
         
     def darwEvent(self,changeColorDir={}):
+        #根据传入的字典改变颜色并刷新画布
         self.color = ['darkviolet']*len(self.data)
         for i in changeColorDir.keys():
             self.color[i] = changeColorDir[i]
