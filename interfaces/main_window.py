@@ -9,7 +9,9 @@ from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCard
                             Action,RoundMenu,NavigationItemPosition,NavigationAvatarWidget,StrongBodyLabel,BodyLabel,
                             ToolTipFilter,TitleLabel,SplashScreen)
 
+from interfaces.home_interface.main import HomeInterface
 from interfaces.sort_interface.main import SortInterface
+from interfaces.search_interface.main import SearchInterface
 
 
 
@@ -25,16 +27,32 @@ class mainWindow(FluentWindow):
         self.splashScreen.finish()
         
     def initWidget(self):
+        self.homeinterface = HomeInterface(self)
         self.sortinterface = SortInterface(self)
+        self.searchinterface = SearchInterface(self)
     
     def initNavigation(self):
         self.navigationInterface.panel.menuButton.setToolTip('展开菜单')
         self.navigationInterface.setExpandWidth(300)
         
         self.addSubInterface(
-            interface=self.sortinterface,
+            interface=self.homeinterface,
             icon=FluentIcon.HOME,
+            text='主页',
+            position=NavigationItemPosition.TOP,
+        )
+        
+        self.addSubInterface(
+            interface=self.sortinterface,
+            icon=FluentIcon.UNIT,
             text='排序',
+            position=NavigationItemPosition.TOP,
+        )
+        
+        self.addSubInterface(
+            interface=self.searchinterface,
+            icon=FluentIcon.IOT,
+            text='搜索',
             position=NavigationItemPosition.TOP,
         )
         

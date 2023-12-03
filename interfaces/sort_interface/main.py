@@ -21,7 +21,7 @@ from interfaces.sort_interface.advancedsort import AdvancedSort
 
 class SortInterface(GalleryInterface):
     def __init__(self, parent=None):
-        super().__init__(title="排序",subtitle="Sort",parent=parent)
+        super().__init__(title="排序算法",subtitle="Sort",parent=parent)
         self.setObjectName('SortInterface')
         self.view = QWidget()
 
