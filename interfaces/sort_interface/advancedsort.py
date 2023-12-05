@@ -150,6 +150,7 @@ class AdvancedSort(SimpleCardWidget):
     def onClickedQuickSortButton(self):
         self.showMessageBox('快速排序','快速排序的时间复杂度为O(nlogn)，请耐心等待')
         self.prohibitWidget()
+        self.sleeptime = float(self.sleeptimeLineEdit.text())
         #快速排序
         pass
         self.enableWidget()
@@ -157,13 +158,15 @@ class AdvancedSort(SimpleCardWidget):
     def onClickedMergeSortButton(self):
         self.showMessageBox('归并排序','归并排序的时间复杂度为O(nlogn)，请耐心等待')
         self.prohibitWidget()
+        self.sleeptime = float(self.sleeptimeLineEdit.text())
         #归并排序
-        pass
+        self.merge_sort(0,len(self.data))
         self.enableWidget()
     
     def onClickedHeapSortButton(self):
         self.showMessageBox('堆排序','堆排序的时间复杂度为O(nlogn)，请耐心等待')
         self.prohibitWidget()
+        self.sleeptime = float(self.sleeptimeLineEdit.text())
         #堆排序
         pass
         self.enableWidget()
@@ -173,3 +176,31 @@ class AdvancedSort(SimpleCardWidget):
         w = MessageBox(title, content, self.window())
         while not w.exec():
             pass
+        
+    def merge_sort(self,left,right):
+        #归并排序
+        ll = left
+        rr = right
+        if rr-ll<=1:
+            return
+        mid = (ll+rr)//2
+        self.merge_sort(ll,mid)
+        self.merge_sort(mid,rr)
+        self.darwEvent({ll:'green',rr-1:'green'})
+        self.data[ll:rr] = self.merge_(self.data[ll:mid],self.data[mid:rr])
+        self.darwEvent({ll:'green',rr-1:'green'})
+        
+        
+    def merge_(self,a,b):
+        i,j = 0,0
+        c = []
+        while i<len(a) and j<len(b):
+            if a[i]<b[j]:
+                c.append(a[i])
+                i+=1
+            else:
+                c.append(b[j])
+                j+=1
+        c.extend(a[i:])
+        c.extend(b[j:])
+        return c
