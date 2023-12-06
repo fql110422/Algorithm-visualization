@@ -152,7 +152,7 @@ class AdvancedSort(SimpleCardWidget):
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         #快速排序
-        pass
+        self.quick_sort(0,len(self.data)-1)
         self.enableWidget()
         
     def onClickedMergeSortButton(self):
@@ -243,5 +243,25 @@ class AdvancedSort(SimpleCardWidget):
             self.sift_down(self.data, 0, i - 1)
             i -= 1
 
+    def quick_sort(self, first, last):
 
 
+        if first >= last:
+            return
+        mid_value = self.data[first]
+        low = first
+        high = last
+        while low < high:
+            self.darwEvent({low: 'red', high: 'green'})
+
+            while low < high and self.data[high] >= mid_value:
+                high -= 1
+
+            self.data[low] = self.data[high]
+            while low < high and self.data[low] < mid_value:
+                low += 1
+
+            self.data[high] = self.data[low]
+        self.data[low] = mid_value
+        self.quick_sort(first, low - 1)
+        self.quick_sort(low + 1, last)
