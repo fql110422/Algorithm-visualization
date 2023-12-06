@@ -167,8 +167,9 @@ class AdvancedSort(SimpleCardWidget):
         self.showMessageBox('堆排序','堆排序的时间复杂度为O(nlogn)，请耐心等待')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
+        self.heap_sort()
         #堆排序
-        pass
+
         self.enableWidget()
         
     def showMessageBox(self,title,content):
@@ -204,3 +205,43 @@ class AdvancedSort(SimpleCardWidget):
         c.extend(a[i:])
         c.extend(b[j:])
         return c
+
+    def sift_down(self,arr, start, end):
+        # 计算父结点和子结点的下标
+        parent = int(start)
+        child = int(parent * 2 + 1)
+        while child <= end:  # 限制子结点下标在范围内
+            # 比较两个子结点大小，选择最大的
+
+            if child + 1 <= end and arr[child] < arr[child + 1]:
+                self.darwEvent({child + 1: 'green', child: 'red'})
+                child += 1
+            # 父结点比子结点大，代表调整完毕，直接跳出函数
+            if arr[parent] >= arr[child]:
+                self.darwEvent({parent: 'green', child: 'red'})
+                return
+            else:  # 交换父子内容，子结点再和孙结点比较
+                arr[parent], arr[child] = arr[child], arr[parent]
+                self.darwEvent({parent: 'red', child: 'green'})
+                parent = child
+                child = int(parent * 2 + 1)
+
+
+    def heap_sort(self):
+
+        leng=len(self.data)
+        # 从最后一个节点的父节点开始 sift down
+        i = (leng - 1 - 1) / 2
+        while (i >= 0):
+            self.sift_down(self.data, i, leng - 1)
+            i -= 1
+
+        # 先将第一个元素和已经排好的元素前一位做交换，再重新调整，直到排序完毕
+        i = leng - 1
+        while (i > 0):
+            self.data[0], self.data[i] = self.data[i], self.data[0]
+            self.sift_down(self.data, 0, i - 1)
+            i -= 1
+
+
+
