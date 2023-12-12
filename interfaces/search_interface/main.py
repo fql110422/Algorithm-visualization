@@ -69,7 +69,7 @@ class SearchInterface(GalleryInterface):
     def onclickedBFS(self):
         #广度优先搜索
         self.unableButton()
-        self.list = self.grid.returnlist #获取网格迷宫
+        self.list = self.grid.returnlist() #获取网格迷宫
         if self.checkifin(2) and self.checkifin(3): #检查是否设置了起点和终点
             pass
             #广度优先搜索代码
@@ -84,7 +84,7 @@ class SearchInterface(GalleryInterface):
     def onclickedDFS(self):
         #深度优先搜索
         self.unableButton()
-        self.list = self.grid.returnlist
+        self.list = self.grid.returnlist()
         if self.checkifin(2) and self.checkifin(3):
             pass
             start = self.findStart()
@@ -110,7 +110,7 @@ class SearchInterface(GalleryInterface):
     def checkifin(self, n):
         for i in range(len(self.list)):
             for j in range(len(self.list)):
-                if list[i][j] == n:
+                if self.list[i][j] == n:
                     return True
     
     def showMessageBox(self,title,content):
