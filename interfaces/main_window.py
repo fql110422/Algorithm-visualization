@@ -12,6 +12,7 @@ from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCard
 from interfaces.home_interface.main import HomeInterface
 from interfaces.sort_interface.main import SortInterface
 from interfaces.search_interface.main import SearchInterface
+from interfaces.find_interface.main import FindInterface
 
 '''
 //                            _ooOoo_  
@@ -55,6 +56,7 @@ class mainWindow(FluentWindow):
         self.homeinterface = HomeInterface(self)
         self.sortinterface = SortInterface(self)
         self.searchinterface = SearchInterface(self)
+        self.findinterface = FindInterface(self)
     
     def initNavigation(self):
         self.navigationInterface.panel.menuButton.setToolTip('展开菜单')
@@ -79,6 +81,13 @@ class mainWindow(FluentWindow):
             icon=FluentIcon.IOT,
             text='搜索',
             position=NavigationItemPosition.TOP,
+        )
+        
+        self.addSubInterface(
+            interface=self.findinterface,
+            icon=FluentIcon.ALBUM,
+            text="查找",
+            position=NavigationItemPosition.TOP
         )
         
         

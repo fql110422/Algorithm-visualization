@@ -31,7 +31,7 @@ class ToolBar(QWidget):
         super().__init__(parent)
         self.titleLabel = TitleLabel(title, self)
         self.subtitleLabel = CaptionLabel(subtitle, self)
-        self.themeButton = ToolButton(FluentIcon.CONSTRACT, self)
+        #self.themeButton = ToolButton(FluentIcon.CONSTRACT, self)
         self.separator = SeparatorWidget(self)
         self.submitButton = PushButton("联系开发者", self, FluentIcon.GITHUB)
         
@@ -56,15 +56,15 @@ class ToolBar(QWidget):
         self.hBoxLayout.addWidget(self.submitButton,0,Qt.AlignLeft)
         self.hBoxLayout.addStretch(1)
         self.hBoxLayout.addWidget(self.separator,0,Qt.AlignRight)
-        self.hBoxLayout.addWidget(self.themeButton,0,Qt.AlignRight)
+        #self.hBoxLayout.addWidget(self.themeButton,0,Qt.AlignRight)
         self.hBoxLayout.setAlignment(Qt.AlignVCenter | Qt.AlignLeft)
         
         self.submitButton.installEventFilter(ToolTipFilter(self.submitButton))
         self.submitButton.setToolTip(self.tr('如果有任何问题或者有修改建议，欢迎联系开发者'))
         
-        self.themeButton.installEventFilter(ToolTipFilter(self.themeButton))
+        '''self.themeButton.installEventFilter(ToolTipFilter(self.themeButton))
         self.themeButton.setToolTip(self.tr('变更主题'))
-        self.themeButton.clicked.connect(lambda: toggleTheme(True))
+        self.themeButton.clicked.connect(lambda: toggleTheme(True))'''
         
         self.subtitleLabel.setTextColor(QColor(96, 96, 96), QColor(216, 216, 216))
         

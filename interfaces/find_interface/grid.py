@@ -33,64 +33,63 @@ class GridItem(PushButton):
         
         self.color = "white"
         self.setcolor(self.color)
-        
-        self.clicked.connect(self.leftclick)
         self.rightClicked.connect(self.rightclick)
         
-    def leftclick(self):
-        #设置障碍
-        self.setcolor("black")
-        list[self.x][self.y] = 1
-        
     def rightclick(self):
-        #设置起点和终点
-        if not self.checkifin(2):
-            self.setcolor("green")
-            list[self.x][self.y] = 2
-        elif not self.checkifin(3):
-            self.setcolor("red")
-            list[self.x][self.y] = 3
+        #设置要查找的数
+        if not 1 in list:
+            if self.x != 1:
+                pass
+            else:
+                self.setcolor("red")
+                list[self.y] = 1
         else:
-            self.showMessageBox("错误", "起点和终点已经设置")
+            self.showMessageBox("错误", "要查找的数已设置")
             
-    def checkifin(self, n):
-        for i in range(len(list)):
-            for j in range(len(list)):
-                if list[i][j] == n:
-                    return True
-
     def setcolor(self, color):
         #设置按钮颜色
         self.color = color
-        self.setStyleSheet(
-            "border: 1px solid black; "
-            "background-color: {};".format(self.color)
-        )
+        if self.x == 1:
+            self.setStyleSheet(
+                "border: 1px solid black; "
+                "background-color: {};".format(self.color)
+            )
+        else:
+            self.setStyleSheet(
+                "border: 0px solid black; "
+                "background-color: white;"
+            )
+           
+    def showMessageBox(self,title,content):
+        #显示消息框
+        w = MessageBox(title, content, self.window())
+        while not w.exec():
+            pass
     
     def mousePressEvent(self, evt):
         super().mousePressEvent(evt)
         # 为右键单击事件建立信号
         if evt.button()==Qt.RightButton:
             self.rightClicked.emit()
-    
-    def showMessageBox(self,title,content):
-        #显示消息框
-        w = MessageBox(title, content, self.window())
-        while not w.exec():
-            pass
-        
+
+    def setButtonIcon(self, state = False):
+        if state:
+            self.setIcon(FluentIcon.UP)
+        else:
+            self.setIcon(None)
+
 
 class Grid(SimpleCardWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        
         global list
         
-        self.num = 15
-        self.sidelength = 500
-        list = [[0 for i in range(self.num)] for j in range(self.num)]
+        self.col = 3
+        self.num = 21
+        self.sidelength = 700
+        list = [0 for i in range(self.num)]
         
-        self.setFixedSize(int(self.sidelength*1.05), int(self.sidelength*1.05))
+        self.setFixedSize(int(self.sidelength*1.05), int(self.sidelength/self.num*3.5))
         self.flowLayout = FlowLayout()
         self.setLayout(self.flowLayout)
         self.flowLayout.setHorizontalSpacing(0)
@@ -99,43 +98,35 @@ class Grid(SimpleCardWidget):
         self.initWidget()
         
     def initWidget(self):
-        for i in range(self.num):
+        for i in range(self.col):
             for j in range(self.num):
                 self.flowLayout.addWidget(GridItem(i, j, int(self.sidelength/self.num), self))
         self.itemList = self.findChildren(GridItem)
                 
     def resetGridItem(self):
-        #将网格颜色重置
+        #将网格重置
         for item in self.itemList:
             item.setcolor("white")
+            list[item.y] = 0
             item.setText(None)
-            list[item.x][item.y] = 0
-            
-            
-    def resetStartAndEnd(self):
-        #将起点和终点重置
-        for item in self.itemList:
-            if item.color == "green" or item.color == "red" or item.color == "yellow":
-                item.setcolor("white")
-                list[item.x][item.y] = 0
-                item.setText(None)
     
     def setGridItem(self, changedlist):
         #设置网格颜色,传入坐标然后更改颜色
-        for i in range(self.num):
+        for i in range(self.col):
             for j in range(self.num):
-                idx = i*self.num+j
-                if changedlist[i][j] == -1:
+                idx = i*self.col+j
+                if changedlist[idx] == -1:
                     self.itemList[idx].setcolor("yellow")
                 
     def getlist(self):
         return list
     
-    def setButtonText(self, i, j, text = None):
-        idx = self.num*i + j
+    def setArrowhead(self, j, state = True):
+        #设置箭头显示
+        idx = 2*self.num + j
+        self.itemList[idx].setButtonIcon(state)
+        
+    def setButtonText(self, j, text = None):
+        idx = self.num + j
         self.itemList[idx].setText(str(text))
         
-    def setButtonColor(self, i, j, color):
-        #sleep(0.1)
-        idx = self.num*i + j
-        self.itemList[idx].setcolor(color)
