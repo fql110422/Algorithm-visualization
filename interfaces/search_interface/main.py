@@ -70,22 +70,65 @@ class SearchInterface(GalleryInterface):
         )
         
     def onclickedDFS(self):
-        #广度优先搜索
+        #深度优先搜索
         self.unableButton()
         self.list = self.grid.getlist() #获取网格迷宫
+        self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3): #检查是否设置了起点和终点
             pass
             #广度优先搜索代码
-            start = self.findStart()
-            end = self.findEnd()
+            start_i, start_j = self.findStart()
+            end_i, end_j = self.findEnd()
             
+            self.timer = QTimer()
+            self.timer.timeout.connect(self.update_gui_dfs)
+            self.dfs_generator = self.DFS(start_i, start_j, end_i, end_j)
+            self.timer.start(50)
             
         else:
             self.showMessageBox("错误", "请设置起点和终点")
         self.enableButton()
         
+    def update_gui_dfs(self):
+        try:
+            next(self.dfs_generator)
+        except:
+            self.timer.stop()
+            
+    def DFS(self, start_i, start_j, end_i, end_j):
+        Q = deque()
+        Q.append(Node(start_i, start_j, 0))
+        
+        while Q:
+            now = Q.pop()
+            for i in range(4):
+                xx, yy = now.x, now.y
+                while True:
+                    xx += dir[i][0]
+                    yy += dir[i][1]
+                    if self.in_map(xx, yy):
+                        if not self.vis[xx][yy] and self.list[xx][yy] != 1:
+                            self.vis[xx][yy] = True
+                            now.step += 1
+                            Q.append(Node(xx, yy, now.step))
+                            self.grid.setButtonText(xx, yy, str(now.step))
+                            if self.list[xx][yy] == 3:
+                                self.showMessageBox("成功", "已经走到终点")
+                                return
+                            elif self.list[xx][yy] == 0:
+                                self.grid.setButtonColor(xx, yy, "blue")
+                            yield
+                            self.grid.setButtonColor(xx,yy,"yellow")
+                            yield
+                        else:
+                            break
+                    else:
+                        break
+        if not self.vis[end_i][end_j]:
+            self.showMessageBox("失败","没有找到一条成功路径")
+        
     def onclickedBFS(self):
-        #深度优先搜索
+        #广度优先搜索
         self.unableButton()
         self.list = self.grid.getlist()
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
@@ -95,8 +138,8 @@ class SearchInterface(GalleryInterface):
             end_i, end_j = self.findEnd()
             
             self.timer = QTimer()
-            self.timer.timeout.connect(self.update_gui)
-            self.dfs_generator = self.BFS(start_i, start_j, end_i, end_j)
+            self.timer.timeout.connect(self.update_gui_bfs)
+            self.bfs_generator = self.BFS(start_i, start_j, end_i, end_j)
             self.timer.start(50)
             
             
@@ -104,11 +147,12 @@ class SearchInterface(GalleryInterface):
             self.showMessageBox("错误", "请设置起点和终点")
         self.enableButton()
     
-    def update_gui(self):
+    def update_gui_bfs(self):
         try:
-            next(self.dfs_generator)
+            next(self.bfs_generator)
         except:
             self.timer.stop()
+            
     
     def BFS(self, start_i, start_j, end_i, end_j):
         Q = deque()
