@@ -30,6 +30,7 @@ class GridItem(PushButton):
         self.setFixedSize(self.sidelength, self.sidelength)
         self.x = x
         self.y = y
+        self.is_choosed = False
         
         self.color = "white"
         self.setcolor(self.color)
@@ -108,7 +109,7 @@ class Grid(SimpleCardWidget):
         for item in self.itemList:
             item.setcolor("white")
             list[item.y] = 0
-            item.setText(None)
+            item.setIcon(None)
     
     def setGridItem(self, changedlist):
         #设置网格颜色,传入坐标然后更改颜色
@@ -121,12 +122,19 @@ class Grid(SimpleCardWidget):
     def getlist(self):
         return list
     
+    def getTarget(self):
+        for i in range(len(list)):
+            if list[i] == 1:
+                return i
+        return -1
+    
     def setArrowhead(self, j, state = True):
-        #设置箭头显示
+        # 设置箭头显示
         idx = 2*self.num + j
         self.itemList[idx].setButtonIcon(state)
         
     def setButtonText(self, j, text = None):
+        # 设置按钮文本
         idx = self.num + j
         self.itemList[idx].setText(str(text))
         

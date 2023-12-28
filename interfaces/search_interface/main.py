@@ -68,10 +68,12 @@ class SearchInterface(GalleryInterface):
             "border: none; "
             "background-color: transparent;"
         )
-        
+       
+#------------------------------DFS----------------------------------------------------       
+ 
     def onclickedDFS(self):
         #深度优先搜索
-        self.unableButton()
+        self.unableWidget()
         self.list = self.grid.getlist() #获取网格迷宫
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3): #检查是否设置了起点和终点
@@ -87,13 +89,13 @@ class SearchInterface(GalleryInterface):
             
         else:
             self.showMessageBox("错误", "请设置起点和终点")
-        self.enableButton()
         
     def update_gui_dfs(self):
         try:
             next(self.dfs_generator)
         except:
             self.timer.stop()
+            self.enableWidget()
             
     def DFS(self, start_i, start_j, end_i, end_j):
         Q = deque()
@@ -127,9 +129,11 @@ class SearchInterface(GalleryInterface):
         if not self.vis[end_i][end_j]:
             self.showMessageBox("失败","没有找到一条成功路径")
         
+#--------------------------BFS----------------------------------------------
+
     def onclickedBFS(self):
         #广度优先搜索
-        self.unableButton()
+        self.unableWidget()
         self.list = self.grid.getlist()
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3):
@@ -142,16 +146,15 @@ class SearchInterface(GalleryInterface):
             self.bfs_generator = self.BFS(start_i, start_j, end_i, end_j)
             self.timer.start(50)
             
-            
         else:
             self.showMessageBox("错误", "请设置起点和终点")
-        self.enableButton()
     
     def update_gui_bfs(self):
         try:
             next(self.bfs_generator)
         except:
             self.timer.stop()
+            self.enableWidget()
             
     
     def BFS(self, start_i, start_j, end_i, end_j):
@@ -184,13 +187,13 @@ class SearchInterface(GalleryInterface):
         return 0 <= x < len(self.list) and 0 <= y < len(self.list)
         
             
-    def unableButton(self):
+    def unableWidget(self):
         self.resetGridButton.setEnabled(False)
         self.resetStartAndEndButton.setEnabled(False)
         self.BFSButton.setEnabled(False)
         self.DFSButton.setEnabled(False)
         
-    def enableButton(self):
+    def enableWidget(self):
         self.resetGridButton.setEnabled(True)
         self.resetStartAndEndButton.setEnabled(True)
         self.BFSButton.setEnabled(True)
