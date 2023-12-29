@@ -50,6 +50,8 @@ class FindInterface(GalleryInterface):
         self.sequential_search_Button.clicked.connect(self.onClickedsequentialSearchButton)
         self.binary_search_Button.clicked.connect(self.onClickedbinarysearchButton)
         self.interpolation_search_Button.clicked.connect(self.onClickedinterpolationSearchButton)
+        self.fibonacci_search_Button.clicked.connect(self.onClickedfibonacciSearchButton)
+        self.hash_search_Button.clicked.connect(self.onClickedhashSearchButton)
         
         self.initWidget()
         self.initLayout()
@@ -284,7 +286,52 @@ class FindInterface(GalleryInterface):
             self.timer.start(500)
             
     def fibonacciSearch(self):
-        pass
+        fibMMm2 = 0
+        fibMMm1 = 1
+        fibM = fibMMm2 + fibMMm1
+        
+        while fibM < len(self.data):
+            fibMMm2 = fibMMm1
+            fibMMm1 = fibM
+            fibM = fibMMm2 + fibMMm1
+            
+        offset = -1
+        i = 0
+        while fibM > 1:
+            last_i = i
+            i = min(offset+fibMMm2, len(self.data)-1)
+            self.onClickedresetButton()
+            self.grid.setArrowhead(last_i,False)
+            self.grid.setArrowhead(i)
+            self.gridColorSet(offset+1, i, "red")
+            self.gridColorSet(i+1, i+fibMMm1, "green")
+            yield
+            
+            if self.data[i] < self.target:   
+                fibM = fibMMm1
+                fibMMm1 = fibMMm2
+                fibMMm2 = fibM - fibMMm1
+                offset = i
+                
+            elif self.data[i] > self.target:
+                fibM = fibMMm2
+                fibMMm1 = fibMMm1 - fibMMm2
+                fibMMm2 = fibM - fibMMm1
+                
+            else:
+                self.showMessageBox("查找成功","数字"+str(self.target)+"在第"+str(offset+2)+"个位置")
+                return
+            
+        if fibMMm1 and self.data[offset+1] == self.target:
+            self.showMessageBox("查找成功","数字"+str(self.target)+"在第"+str(offset+2)+"个位置")
+            return
+        
+        self.showMessageBox("查找失败","所要找的数不在列表中")
+    
+    def gridColorSet(self, left, right, color):
+        for i in range(left, right+1):
+            self.grid.setButtonColor(i, color)
+    
 #--------------------------哈希查找部分--------------------------
     def update_gui_hash(self):
         try:
@@ -312,7 +359,16 @@ class FindInterface(GalleryInterface):
             self.timer.start(500)
             
     def hashSearch(self):
-        pass
+        hash_table = {value: index for index, value in enumerate(self.data)}
+        for i in range(len(self.data)):
+            try:
+                self.grid.setArrowhead(hash_table[self.target])
+                self.showMessageBox("查找成功","数字"+str(self.target)+"在第"+str(hash_table[self.target]+1)+"个位置")
+                yield
+                return
+            except KeyError:
+                self.showMessageBox("查找失败","所要找的数不在列表中")
+                return
 #-------------------------------------------------------------------
     
     def showMessageBox(self,title,content):

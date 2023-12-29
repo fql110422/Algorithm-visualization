@@ -138,3 +138,8 @@ class Grid(SimpleCardWidget):
         idx = self.num + j
         self.itemList[idx].setText(str(text))
         
+    def setButtonColor(self, j, color = None):
+        # 设置按钮颜色
+        idx = self.num + j
+        self.itemList[idx].setcolor(color)
+        
