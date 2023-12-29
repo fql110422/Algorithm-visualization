@@ -188,14 +188,16 @@ class FindInterface(GalleryInterface):
                 return 
             elif self.data[mid] < self.target:
                 left = mid + 1
-                self.grid.setArrowhead(last_left,False)
-                self.grid.setArrowhead(left)
-                yield
+                if left < len(self.data):
+                    self.grid.setArrowhead(last_left,False)
+                    self.grid.setArrowhead(left)
+                    yield
             else:
                 right = mid - 1
-                self.grid.setArrowhead(last_right,False)
-                self.grid.setArrowhead(right)
-                yield
+                if right >= 0:
+                    self.grid.setArrowhead(last_right,False)
+                    self.grid.setArrowhead(right)
+                    yield
         self.showMessageBox("查找失败","所要找的数不在列表中")
                 
     def arrowheadshow(self, i, j, state = True):

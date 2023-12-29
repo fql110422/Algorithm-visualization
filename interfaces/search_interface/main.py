@@ -1,3 +1,4 @@
+import threading
 import typing
 from collections import deque
 import matplotlib
@@ -21,7 +22,35 @@ from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCard
 from interfaces.gallery_interface.main import GalleryInterface
 from interfaces.search_interface.grid import Grid
 
-dir = [[-1,0],[0,-1],[0,1],[1,0]]
+'''
+//                            _ooOoo_  
+//                           o8888888o  
+//                           88" . "88  
+//                           (| -_- |)  
+//                            O\ = /O  
+//                        ____/`---'\____  
+//                      .   ' \\| |// `.  
+//                       / \\||| : |||// \  
+//                     / _||||| -:- |||||- \  
+//                       | | \\\ - /// | |  
+//                     | \_| ''\---/'' | |  
+//                      \ .-\__ `-` ___/-. /  
+//                   ___`. .' /--.--\ `. . __  
+//                ."" '< `.___\_<|>_/___.' >'"".  
+//               | | : `- \`.;`\ _ /`;.`/ - ` : | |  
+//                 \ \ `-. \_ __\ /__ _/ .-` / /  
+//         ======`-.____`-.___\_____/___.-`____.-'======  
+//                            `=---='  
+//  
+//         .............................................  
+//                  佛祖保佑             永无BUG 
+//         .............................................
+//                           23.12.29
+'''
+
+
+
+dir = [[-1,0],[0,-1],[1,0],[0,1]]
 
 class SearchInterface(GalleryInterface):
     def __init__(self, parent=None):
@@ -73,31 +102,41 @@ class SearchInterface(GalleryInterface):
  
     def onclickedDFS(self):
         #深度优先搜索
-        self.unableWidget()
+        self.grid.resetPassedWay()
         self.list = self.grid.getlist() #获取网格迷宫
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3): #检查是否设置了起点和终点
-            pass
-            #广度优先搜索代码
+            #深度优先搜索代码
+            self.unableWidget()
             start_i, start_j = self.findStart()
             end_i, end_j = self.findEnd()
+            self.grid.setButtonText(start_i, start_j, "0")
             
-            self.timer = QTimer()
-            self.timer.timeout.connect(self.update_gui_dfs)
-            self.dfs_generator = self.DFS(start_i, start_j, end_i, end_j)
-            self.timer.start(50)
+            self.worker = DFSWorker(self.grid, self.list, start_i, start_j, end_i, end_j)
+            self.worker.updateSignal_color.connect(self.update_gui_dfs_color)
+            self.worker.updateSignal_text.connect(self.update_gui_dfs_text)
+            self.worker.finished.connect(self.update_gui_dfs_end)
+            
+            self.worker.start()
             
         else:
             self.showMessageBox("错误", "请设置起点和终点")
-        
-    def update_gui_dfs(self):
-        try:
-            next(self.dfs_generator)
-        except:
-            self.timer.stop()
-            self.enableWidget()
+    
+    def update_gui_dfs_text(self, x, y, text):
+        self.grid.setButtonText(x, y, text)
             
-    def DFS(self, start_i, start_j, end_i, end_j):
+    def update_gui_dfs_color(self, x, y, color):
+        if self.grid.getButtonColor(x, y) != "red" and self.grid.getButtonColor(x, y) != "green":
+            self.grid.setButtonColor(x, y, color)
+        
+    def update_gui_dfs_end(self):
+        if self.worker.is_sccuess:
+            self.showMessageBox("成功", "已经走到终点")
+        else:
+            self.showMessageBox("失败","没有找到一条成功路径")
+        self.enableWidget()
+            
+    '''def DFS(self, start_i, start_j, end_i, end_j):
         Q = deque()
         Q.append(Node(start_i, start_j, 0))
         
@@ -109,35 +148,39 @@ class SearchInterface(GalleryInterface):
                     xx += dir[i][0]
                     yy += dir[i][1]
                     if self.in_map(xx, yy):
-                        if not self.vis[xx][yy] and self.list[xx][yy] != 1:
+                        if not self.vis[xx][yy] and self.list[xx][yy] != 1 and self.list:
                             self.vis[xx][yy] = True
                             now.step += 1
-                            Q.append(Node(xx, yy, now.step))
                             self.grid.setButtonText(xx, yy, str(now.step))
+                            Q.append(Node(xx, yy, now.step))
                             if self.list[xx][yy] == 3:
                                 self.showMessageBox("成功", "已经走到终点")
                                 return
                             elif self.list[xx][yy] == 0:
                                 self.grid.setButtonColor(xx, yy, "blue")
-                            yield
+                                yield
                             self.grid.setButtonColor(xx,yy,"yellow")
                             yield
+                            
                         else:
                             break
                     else:
                         break
+        
+            
         if not self.vis[end_i][end_j]:
-            self.showMessageBox("失败","没有找到一条成功路径")
+            self.showMessageBox("失败","没有找到一条成功路径")'''
         
 #--------------------------BFS----------------------------------------------
 
     def onclickedBFS(self):
         #广度优先搜索
-        self.unableWidget()
+        self.grid.resetPassedWay()
         self.list = self.grid.getlist()
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3):
             pass
+            self.unableWidget()
             start_i, start_j = self.findStart()
             end_i, end_j = self.findEnd()
             
@@ -155,8 +198,7 @@ class SearchInterface(GalleryInterface):
         except:
             self.timer.stop()
             self.enableWidget()
-            
-    
+             
     def BFS(self, start_i, start_j, end_i, end_j):
         Q = deque()
         Q.append(Node(start_i, start_j, 0))
@@ -185,7 +227,8 @@ class SearchInterface(GalleryInterface):
                 
     def in_map(self, x, y):
         return 0 <= x < len(self.list) and 0 <= y < len(self.list)
-        
+      
+#--------------------------------------------------------------------------------  
             
     def unableWidget(self):
         self.resetGridButton.setEnabled(False)
@@ -208,9 +251,8 @@ class SearchInterface(GalleryInterface):
     def showMessageBox(self,title,content):
         #显示消息框
         w = MessageBox(title, content, self.window())
-        while not w.exec():
-            pass
-        
+        w.exec()
+          
     def findStart(self):
         for i in range(len(self.list)):
             for j in range(len(self.list)):
@@ -222,11 +264,59 @@ class SearchInterface(GalleryInterface):
             for j in range(len(self.list)):
                 if self.list[i][j] == 3:
                     return i, j
-                
-    
-    
+            
 class Node:
     def __init__(self, x=0, y=0, step=0):
         self.x = x
         self.y = y
         self.step = step
+        
+class DFSWorker(QThread):
+    updateSignal_color = pyqtSignal(int, int, str)
+    updateSignal_text = pyqtSignal(int, int, str)
+    updateSignal_end = pyqtSignal(bool)
+    
+    def __init__(self, grid, list, start_i, start_j, end_i, end_j):
+        super().__init__()
+        self.grid = grid
+        self.list = list
+        self.start_i = start_i
+        self.start_j = start_j
+        self.end_i = end_i
+        self.end_j = end_j
+        
+        self.is_sccuess = False
+        
+    def DFS(self, i ,j, end_i, end_j):
+        if i == end_i and j == end_j:
+            self.is_sccuess = True
+            return True
+        for k in range(4):
+            xx, yy = i + dir[k][0], j + dir[k][1]
+            if self.in_map(xx, yy):
+                if self.list[xx][yy] != 1 and self.list[xx][yy] != 2:
+                    if self.grid.getButtonText(i, j).isdigit():
+                        self.updateSignal_text.emit(xx, yy, str(int(self.grid.getButtonText(i, j)) + 1))
+                    if self.list[xx][yy] == 0:
+                        self.updateSignal_color.emit(xx, yy, "blue")
+                        sleep(0.05)
+                        self.updateSignal_color.emit(xx, yy, "yellow")
+                    if self.list[xx][yy] != 3 and self.list[xx][yy] != 2:
+                        self.list[xx][yy] = 1
+                    if self.DFS(xx, yy, end_i, end_j):
+                        if self.list[xx][yy] != 3:
+                            self.updateSignal_color.emit(xx, yy, "pink")
+                            sleep(0.05)
+                        return True
+        
+        self.updateSignal_color.emit(i, j, "blue")
+        sleep(0.05)
+        self.updateSignal_color.emit(i, j, "purple")
+        self.updateSignal_text.emit(i, j, None)
+        return False
+    
+    def in_map(self, x, y):
+        return 0 <= x < len(self.list) and 0 <= y < len(self.list)
+    
+    def run(self) -> None:
+        self.DFS(self.start_i, self.start_j, self.end_i, self.end_j)

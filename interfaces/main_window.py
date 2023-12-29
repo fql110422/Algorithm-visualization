@@ -1,7 +1,8 @@
+import sys
 from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal, QProcess,QSize,QPoint
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout, QSizePolicy, QStackedWidget
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QSizePolicy
-from PyQt5.QtGui import QIcon, QCursor
+from PyQt5.QtGui import QIcon, QCursor, QMouseEvent
 from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCardGroup, SwitchSettingCard, 
                             FluentIcon, StrongBodyLabel, BodyLabel, ExpandLayout, ToolTipFilter, ComboBoxSettingCard, 
                             ToolTipPosition, PrimaryPushSettingCard, InfoBar, InfoBarPosition, PushButton, TitleLabel, 
@@ -110,3 +111,6 @@ class mainWindow(FluentWindow):
         self.move(w // 2 - self.width() // 2, h // 2 - self.height() // 2)
         self.show()
         QApplication.processEvents()
+        
+    def closeEvent(self, e):
+        sys.exit(0)

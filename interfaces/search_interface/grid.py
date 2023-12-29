@@ -1,4 +1,9 @@
+from collections.abc import Callable, Iterable, Mapping
 import typing
+from typing import Any
+import win32api
+import ctypes
+import threading
 from PyQt5 import QtCore
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -10,7 +15,7 @@ import random
 from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal, QProcess,QSize,QPoint
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout, QSizePolicy, QStackedWidget
 from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QSizePolicy, QMessageBox
-from PyQt5.QtGui import QIcon, QCursor
+from PyQt5.QtGui import QIcon, QCursor, QMouseEvent, QEnterEvent
 from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCardGroup, SwitchSettingCard, 
                             FluentIcon, StrongBodyLabel, BodyLabel, ExpandLayout, ToolTipFilter, ComboBoxSettingCard, 
                             ToolTipPosition, PrimaryPushSettingCard, InfoBar, InfoBarPosition, PushButton, TitleLabel, 
@@ -44,14 +49,19 @@ class GridItem(PushButton):
         
     def rightclick(self):
         #设置起点和终点
-        if not self.checkifin(2):
-            self.setcolor("green")
-            list[self.x][self.y] = 2
-        elif not self.checkifin(3):
-            self.setcolor("red")
-            list[self.x][self.y] = 3
+        if self.color == "white":
+            if not self.checkifin(2):
+                self.setcolor("green")
+                list[self.x][self.y] = 2
+            elif not self.checkifin(3):
+                self.setcolor("red")
+                list[self.x][self.y] = 3
+            else:
+                self.showMessageBox("错误", "起点和终点已经设置")
         else:
-            self.showMessageBox("错误", "起点和终点已经设置")
+            self.setcolor("white")
+            list[self.x][self.y] = 0
+            self.setText(None)
             
     def checkifin(self, n):
         for i in range(len(list)):
@@ -78,6 +88,7 @@ class GridItem(PushButton):
         w = MessageBox(title, content, self.window())
         while not w.exec():
             pass
+
         
 
 class Grid(SimpleCardWidget):
@@ -115,7 +126,15 @@ class Grid(SimpleCardWidget):
     def resetStartAndEnd(self):
         #将起点和终点重置
         for item in self.itemList:
-            if item.color == "green" or item.color == "red" or item.color == "yellow":
+            if item.color == "green" or item.color == "red" or item.color == "yellow" or item.color == "pink" or item.color == "purple":
+                item.setcolor("white")
+                list[item.x][item.y] = 0
+                item.setText(None)
+                
+    def resetPassedWay(self):
+        #将已经走过的路重置
+        for item in self.itemList:
+            if item.color == "yellow" or item.color == "pink" or item.color == "purple":
                 item.setcolor("white")
                 list[item.x][item.y] = 0
                 item.setText(None)
@@ -139,3 +158,11 @@ class Grid(SimpleCardWidget):
         #sleep(0.1)
         idx = self.num*i + j
         self.itemList[idx].setcolor(color)
+        
+    def getButtonText(self, i, j):
+        idx = self.num*i + j
+        return self.itemList[idx].text()
+    
+    def getButtonColor(self, i, j):
+        idx = self.num*i + j
+        return self.itemList[idx].color
