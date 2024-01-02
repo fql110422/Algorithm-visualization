@@ -97,9 +97,9 @@ class Grid(SimpleCardWidget):
         
         global list
         
-        self.num = 15
+        self._____ = 15
         self.sidelength = 500
-        list = [[0 for i in range(self.num)] for j in range(self.num)]
+        list = [[0 for i in range(self._____)] for j in range(self._____)]
         
         self.setFixedSize(int(self.sidelength*1.05), int(self.sidelength*1.05))
         self.flowLayout = FlowLayout()
@@ -110,9 +110,9 @@ class Grid(SimpleCardWidget):
         self.initWidget()
         
     def initWidget(self):
-        for i in range(self.num):
-            for j in range(self.num):
-                self.flowLayout.addWidget(GridItem(i, j, int(self.sidelength/self.num), self))
+        for i in range(self._____):
+            for j in range(self._____):
+                self.flowLayout.addWidget(GridItem(i, j, int(self.sidelength/self._____), self))
         self.itemList = self.findChildren(GridItem)
                 
     def resetGridItem(self):
@@ -141,28 +141,32 @@ class Grid(SimpleCardWidget):
     
     def setGridItem(self, changedlist):
         #设置网格颜色,传入坐标然后更改颜色
-        for i in range(self.num):
-            for j in range(self.num):
-                idx = i*self.num+j
-                if changedlist[i][j] == -1:
+        for __ in range(self._____):
+            for _ in range(self._____):
+                idx = __*self._____+_
+                if changedlist[__][_] == -1:
                     self.itemList[idx].setcolor("yellow")
                 
     def getlist(self):
         return list
     
-    def setButtonText(self, i, j, text = None):
-        idx = self.num*i + j
+    def setButtonText(self, __, _, text = None):
+        idx = self._____*__ + _
         self.itemList[idx].setText(str(text))
         
-    def setButtonColor(self, i, j, color):
+    def setButtonColor(self, __, _, ____):
         #sleep(0.1)
-        idx = self.num*i + j
-        self.itemList[idx].setcolor(color)
+        idx = self._____*__ + _
+        self.itemList[idx].setcolor(____)
         
-    def getButtonText(self, i, j):
-        idx = self.num*i + j
+    def getButtonText(self, __, _):
+        idx = self._____*__ + _
         return self.itemList[idx].text()
     
-    def getButtonColor(self, i, j):
-        idx = self.num*i + j
+    def getButtonColor(self, __, _):
+        idx = self._____*__ + _
         return self.itemList[idx].color
+    
+    def setButtonIcon(self, __, _, icon):
+        idx = self._____*__ + _
+        self.itemList[idx].setIcon(icon)

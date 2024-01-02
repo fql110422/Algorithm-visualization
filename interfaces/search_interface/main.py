@@ -50,7 +50,8 @@ from interfaces.search_interface.grid import Grid
 
 
 
-dir = [[-1,0],[0,-1],[1,0],[0,1]]
+dir = [[-1,0],[0,-1],[1,0],[0,1]] # 上左下右
+dir_icon = [FluentIcon.UP,FluentIcon.LEFT_ARROW,FluentIcon.DOWN,FluentIcon.RIGHT_ARROW]
 
 class SearchInterface(GalleryInterface):
     def __init__(self, parent=None):
@@ -115,6 +116,7 @@ class SearchInterface(GalleryInterface):
             self.worker = DFSWorker(self.grid, self.list, start_i, start_j, end_i, end_j)
             self.worker.updateSignal_color.connect(self.update_gui_dfs_color)
             self.worker.updateSignal_text.connect(self.update_gui_dfs_text)
+            # self.worker.updateSignal_icon.connect(self.update_gui_dfs_icon)
             self.worker.finished.connect(self.update_gui_dfs_end)
             
             self.worker.start()
@@ -128,6 +130,9 @@ class SearchInterface(GalleryInterface):
     def update_gui_dfs_color(self, x, y, color):
         if self.grid.getButtonColor(x, y) != "red" and self.grid.getButtonColor(x, y) != "green":
             self.grid.setButtonColor(x, y, color)
+            
+    def update_gui_dfs_icon(self, x, y, k):
+        self.grid.setButtonIcon(x, y, dir_icon[k])
         
     def update_gui_dfs_end(self):
         if self.worker.is_sccuess:
@@ -274,6 +279,7 @@ class Node:
 class DFSWorker(QThread):
     updateSignal_color = pyqtSignal(int, int, str)
     updateSignal_text = pyqtSignal(int, int, str)
+    updateSignal_icon = pyqtSignal(int, int, int)
     updateSignal_end = pyqtSignal(bool)
     
     def __init__(self, grid, list, start_i, start_j, end_i, end_j):
@@ -306,6 +312,7 @@ class DFSWorker(QThread):
                     if self.DFS(xx, yy, end_i, end_j):
                         if self.list[xx][yy] != 3:
                             self.updateSignal_color.emit(xx, yy, "pink")
+                            self.updateSignal_icon.emit(xx, yy, k)
                             sleep(0.05)
                         return True
         
