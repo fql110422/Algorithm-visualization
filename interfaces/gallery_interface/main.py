@@ -1,5 +1,5 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QPen, QColor
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtGui import QPainter, QPen, QColor, QDesktopServices
 from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout
 from qfluentwidgets import (CaptionLabel,isDarkTheme,ScrollArea, FluentIcon, ExpandLayout, ToolTipFilter, PushButton, TitleLabel)
 
@@ -56,6 +56,7 @@ class ToolBar(QWidget):
         
         self.submitButton.installEventFilter(ToolTipFilter(self.submitButton))
         self.submitButton.setToolTip(self.tr('如果有任何问题或者有修改建议，欢迎联系开发者'))
+        self.submitButton.clicked.connect(lambda:QDesktopServices.openUrl(QUrl("https://github.com/fql110422/Algorithm-visualization")))
         
         '''self.themeButton.installEventFilter(ToolTipFilter(self.themeButton))
         self.themeButton.setToolTip(self.tr('变更主题'))
@@ -86,4 +87,9 @@ class GalleryInterface(ScrollArea):
         
     def resizeEvent(self, e):
         super().resizeEvent(e)
-        self.toolbar.resize(self.width(), self.toolbar.height())       
+        self.toolbar.resize(self.width(), self.toolbar.height())      
+    
+    def scrollToCard(self, index: int):
+        """ scroll to example card """
+        w = self.vBoxLayout.itemAt(index).widget()
+        #self.verticalScrollBar().setValue(w.y()) 

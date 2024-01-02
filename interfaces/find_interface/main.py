@@ -104,6 +104,7 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")           
         else:
+            self.showMessageBox("顺序查找","内容")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -148,6 +149,7 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
+            self.showMessageBox("二分查找","内容")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -209,6 +211,7 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
+            self.showMessageBox("插值查找","内容")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -266,6 +269,7 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
+            self.showMessageBox("斐波那契查找","内容")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -339,6 +343,7 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
+            self.showMessageBox("哈希查找","内容")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             

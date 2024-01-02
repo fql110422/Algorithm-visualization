@@ -7,6 +7,8 @@ from interfaces.home_interface.main import HomeInterface
 from interfaces.sort_interface.main import SortInterface
 from interfaces.search_interface.main import SearchInterface
 from interfaces.find_interface.main import FindInterface
+from interfaces.gallery_interface.main import GalleryInterface
+from interfaces.home_interface.signal_bus import signalBus
 
 '''
 //                            _ooOoo_  
@@ -44,6 +46,8 @@ class mainWindow(FluentWindow):
         self.initWidget()
         self.initNavigation()
         
+        self.connectSignals()
+        
         self.splashScreen.finish()
         
     def initWidget(self):
@@ -51,6 +55,7 @@ class mainWindow(FluentWindow):
         self.sortinterface = SortInterface(self)
         self.searchinterface = SearchInterface(self)
         self.findinterface = FindInterface(self)
+        
     
     def initNavigation(self):
         self.navigationInterface.panel.menuButton.setToolTip('展开菜单')
@@ -107,3 +112,14 @@ class mainWindow(FluentWindow):
         
     def closeEvent(self, e):
         sys.exit(0)
+        
+    def connectSignals(self):
+        signalBus.switchToSampleCard.connect(self.switchToSample)
+        
+    def switchToSample(self, routeKey, index):
+        """ switch to sample """
+        interfaces = self.findChildren(GalleryInterface)
+        for w in interfaces:
+            if w.objectName() == routeKey:
+                self.stackedWidget.setCurrentWidget(w, False)
+                w.scrollToCard(index)

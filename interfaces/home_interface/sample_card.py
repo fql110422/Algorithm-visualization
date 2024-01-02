@@ -2,7 +2,7 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QFrame, QLabel, QVBoxLayout, QHBoxLayout
 
-from qfluentwidgets import IconWidget, TextWrap, FlowLayout, CardWidget
+from qfluentwidgets import IconWidget, TextWrap, FlowLayout, CardWidget, StrongBodyLabel
 from interfaces.home_interface.signal_bus import signalBus
 from interfaces.home_interface.style_sheet import StyleSheet
 
@@ -52,7 +52,7 @@ class SampleCardView(QWidget):
 
     def __init__(self, title: str, parent=None):
         super().__init__(parent=parent)
-        self.titleLabel = QLabel(title, self)
+        self.titleLabel = StrongBodyLabel(title, self)
         self.vBoxLayout = QVBoxLayout(self)
         self.flowLayout = FlowLayout()
 
@@ -66,7 +66,7 @@ class SampleCardView(QWidget):
         self.vBoxLayout.addLayout(self.flowLayout, 1)
 
         self.titleLabel.setObjectName('viewTitleLabel')
-        StyleSheet.SAMPLE_CARD.apply(self)
+        #StyleSheet.SAMPLE_CARD.apply(self)
 
     def addSampleCard(self, icon, title, content, routeKey, index):
         """ add sample card """

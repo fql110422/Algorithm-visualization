@@ -92,6 +92,7 @@ class SearchInterface(GalleryInterface):
         self.list = self.grid.getlist() #获取网格迷宫
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3): #检查是否设置了起点和终点
+            self.showMessageBox("深度优先搜索", "内容")
             #深度优先搜索代码
             self.unableWidget()
             start_i, start_j = self.findStart()
@@ -169,6 +170,7 @@ class SearchInterface(GalleryInterface):
         self.list = self.grid.getlist()
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3):
+            self.showMessageBox("广度优先搜索", "内容")
             pass
             self.unableWidget()
             start_i, start_j = self.findStart()

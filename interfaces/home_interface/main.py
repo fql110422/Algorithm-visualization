@@ -34,6 +34,13 @@ class HomeInterface(GalleryInterface):
             routeKey="SearchInterface",
             index=1
         )
+        cardView.addSampleCard(
+            icon=FluentIcon.ALBUM,
+            title="查找算法",
+            content="包含顺序查找和二分查找。",
+            routeKey="FindInterface",
+            index=1
+        )
         self.vBoxLayout.addWidget(cardView, 0, Qt.AlignTop)
         self.vBoxLayout.addStretch(1)
         
