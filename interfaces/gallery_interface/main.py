@@ -1,12 +1,7 @@
-import typing
-from PyQt5 import QtCore
-from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal, QProcess
-from PyQt5.QtGui import QDesktopServices, QPainter, QPen, QColor
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout, QSizePolicy, QStackedWidget
-from qfluentwidgets import (CaptionLabel,isDarkTheme,ScrollArea, CardWidget, SegmentedWidget, SettingCardGroup, SwitchSettingCard, 
-                            FluentIcon, StrongBodyLabel, BodyLabel, ExpandLayout, ToolTipFilter, ComboBoxSettingCard, 
-                            ToolTipPosition, PrimaryPushSettingCard, InfoBar, InfoBarPosition, PushButton, TitleLabel, 
-                            OptionsSettingCard, HyperlinkCard, PushSettingCard,ToolButton,toggleTheme)
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPainter, QPen, QColor
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout
+from qfluentwidgets import (CaptionLabel,isDarkTheme,ScrollArea, FluentIcon, ExpandLayout, ToolTipFilter, PushButton, TitleLabel)
 
 class SeparatorWidget(QWidget):
     """ Seperator widget """

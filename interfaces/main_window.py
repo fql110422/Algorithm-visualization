@@ -1,14 +1,7 @@
 import sys
-from PyQt5.QtCore import QObject, Qt, QThread, pyqtSignal, QProcess,QSize,QPoint
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QHBoxLayout, QSizePolicy, QStackedWidget
-from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QSizePolicy
-from PyQt5.QtGui import QIcon, QCursor, QMouseEvent
-from qfluentwidgets import (ScrollArea, CardWidget, SegmentedWidget, SettingCardGroup, SwitchSettingCard, 
-                            FluentIcon, StrongBodyLabel, BodyLabel, ExpandLayout, ToolTipFilter, ComboBoxSettingCard, 
-                            ToolTipPosition, PrimaryPushSettingCard, InfoBar, InfoBarPosition, PushButton, TitleLabel, 
-                            OptionsSettingCard, HyperlinkCard, PushSettingCard,FluentWindow,FluentIcon,Theme,setTheme,
-                            Action,RoundMenu,NavigationItemPosition,NavigationAvatarWidget,StrongBodyLabel,BodyLabel,
-                            ToolTipFilter,TitleLabel,SplashScreen)
+from PyQt5.QtCore import QSize
+from PyQt5.QtWidgets import QApplication
+from qfluentwidgets import (FluentIcon, FluentWindow,FluentIcon,Theme,setTheme,NavigationItemPosition,SplashScreen)
 
 from interfaces.home_interface.main import HomeInterface
 from interfaces.sort_interface.main import SortInterface
