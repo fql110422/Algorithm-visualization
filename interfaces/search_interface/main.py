@@ -92,7 +92,8 @@ class SearchInterface(GalleryInterface):
         self.list = self.grid.getlist() #获取网格迷宫
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3): #检查是否设置了起点和终点
-            self.showMessageBox("深度优先搜索", "内容")
+            self.showMessageBox("深度优先搜索", "DFS即深度优先搜索，是最基础、最重要的搜索算法之一。")
+            self.showMessageBox("深度优先搜索", "所谓深度优先，就是说每次都尝试向更深的节点走。通常我们使用递归的方式来实现DFS\n其最显著的特征在于其递归调用自身。同时与 BFS 类似，DFS 会对其访问过的点打上访问标记，在遍历图时跳过已打过标记的点，以确保每个点仅访问一次。")
             #深度优先搜索代码
             self.unableWidget()
             start_i, start_j = self.findStart()
@@ -170,7 +171,8 @@ class SearchInterface(GalleryInterface):
         self.list = self.grid.getlist()
         self.vis = [[False for _ in range(len(self.list))] for _ in range(len(self.list))]
         if self.checkifin(2) and self.checkifin(3):
-            self.showMessageBox("广度优先搜索", "内容")
+            self.showMessageBox("广度优先搜索", "BFS即广度优先搜索，是最基础、最重要的搜索算法之一。")
+            self.showMessageBox("广度优先搜索", "所谓广度优先。就是每次都尝试访问同一层的节点。 \n如果同一层都访问完了，再访问下一层。\n这样做的结果是，BFS 算法找到的路径是从起点开始的最短合法路径。\n在 BFS 结束时，每个节点都是通过从起点到该点的最短路径访问的。")
             pass
             self.unableWidget()
             start_i, start_j = self.findStart()

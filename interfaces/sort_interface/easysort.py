@@ -99,6 +99,7 @@ class EasySort(SimpleCardWidget):
     def onClickedBubbleSortButton(self):
         #冒泡排序
         self.showMessageBox('冒泡排序','冒泡排序的时间复杂度为O(n^2)，请耐心等待')
+        self.showMessageBox('冒泡排序','它的工作原理是每次检查相邻两个元素，如果前面的元素与后面的元素满足给定的排序条件，就将相邻两个元素交换。当没有相邻的元素需要交换时，排序就完成了。')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         if not len(self.data) == 0:
@@ -113,6 +114,7 @@ class EasySort(SimpleCardWidget):
     def onClickedSelectionSortButton(self):
         #选择排序
         self.showMessageBox('选择排序','选择排序的时间复杂度为O(n^2)，请耐心等待')
+        self.showMessageBox('选择排序','选择排序是一种简单直观的排序算法。它的工作原理是每次找出第 i 小的元素，然后将这个元素与数组第 i 个位置上的元素交换。')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         if not len(self.data) == 0:

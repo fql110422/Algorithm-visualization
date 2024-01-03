@@ -135,7 +135,8 @@ class AdvancedSort(SimpleCardWidget):
         sleep(self.sleeptime)
         
     def onClickedQuickSortButton(self):
-        self.showMessageBox('快速排序','快速排序的时间复杂度为O(nlogn)，请耐心等待')
+        self.showMessageBox('快速排序','快速排序是一种不稳定的排序算法。\n它的评价时间复杂度为O(nlogn)，请耐心等待')
+        self.showMessageBox('快速排序', '快速排序分为三个过程：\n1:将数列划分为两部分（要求保证相对大小关系）\n2:递归到两个子序列中分别进行快速排序；\n3:不用合并，因为此时数列已经完全有序。')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         #快速排序
@@ -143,7 +144,8 @@ class AdvancedSort(SimpleCardWidget):
         self.enableWidget()
         
     def onClickedMergeSortButton(self):
-        self.showMessageBox('归并排序','归并排序的时间复杂度为O(nlogn)，请耐心等待')
+        self.showMessageBox('归并排序','归并排序是基于比较的稳定排序算法。\n它的时间复杂度为O(nlogn)，请耐心等待')
+        self.showMessageBox('归并排序', '归并排序最核心的部分是合并（merge）过程：\n1:将两个有序的数组 a[i] 和 b[j] 合并为一个有序数组 c[k]。\n2:从左往右枚举 a[i] 和 b[j]，找出最小的值并放入数组 c[k]；\n3:重复上述过程直到 a[i] 和 b[j] 有一个为空时，将另一个数组剩下的元素放入 c[k]。')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         #归并排序
@@ -151,7 +153,8 @@ class AdvancedSort(SimpleCardWidget):
         self.enableWidget()
     
     def onClickedHeapSortButton(self):
-        self.showMessageBox('堆排序','堆排序的时间复杂度为O(nlogn)，请耐心等待')
+        self.showMessageBox('堆排序','堆排序是利用二叉堆这种数据结构所设计的一种排序算法。其时间复杂度为O(nlogn)，请耐心等待')
+        self.showMessageBox('堆排序','1:首先建立大顶堆，然后将堆顶的元素取出，作为最大值，与数组尾部的元素交换，并维持残余堆的性质；\n2:之后将堆顶的元素取出，作为次大值，与数组倒数第二位元素交换，并维持残余堆的性质；\n3:以此类推，在第 n-1 次操作后，整个数组就完成了排序。')
         self.prohibitWidget()
         self.sleeptime = float(self.sleeptimeLineEdit.text())
         self.heap_sort()

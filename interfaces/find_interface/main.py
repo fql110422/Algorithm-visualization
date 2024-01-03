@@ -104,7 +104,7 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")           
         else:
-            self.showMessageBox("顺序查找","内容")
+            self.showMessageBox("顺序查找","顺序查找是按照序列原有顺序对数组进行遍历比较查询的基本查找算法。")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -149,7 +149,8 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
-            self.showMessageBox("二分查找","内容")
+            self.showMessageBox("二分查找","二分查找也称折半查找，它是一种效率较高的查找方法。")
+            self.showMessageBox("二分查找","首先，假设表中元素是按升序排列，将表中间位置记录的关键字与查找关键字比较，如果两者相等，则查找成功；\n否则利用中间位置记录将表分成前、后两个子表，如果中间位置记录的关键字大于查找关键字，则进一步查找前一子表，否则进一步查找后一子表。\n重复以上过程，直到找到满足条件的记录，使查找成功，或直到子表不存在为止，此时查找不成功。")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -211,7 +212,8 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
-            self.showMessageBox("插值查找","内容")
+            self.showMessageBox("插值查找","插值查找是根据查找关键字与查找表中最大最小记录关键字比较后的查找方法。插值查找基于二分查找，将查找点的选择改进为自适应选择，提高查找效率。")
+            self.showMessageBox("插值查找","插值类似于平常查英文字典的方法，在查一个以字母C开头的英文单词时，决不会用二分查找，从字典的中间一页开始，因为知道它的大概位置是在字典的较前面的部分，因此可以从前面的某处查起，这就是插值查找的基本思想。")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -269,7 +271,8 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
-            self.showMessageBox("斐波那契查找","内容")
+            self.showMessageBox("斐波那契查找","斐波那契查找就是在二分查找的基础上根据斐波那契数列来进行分割的。")
+            self.showMessageBox("斐波那契查找","在斐波那契数列找一个等于略大于查找表中元素个数的数F[n]，将原查找表扩展为长度为F[n](如果要补充元素，则补充重复最后一个元素，直到满足F[n]个元素)，\n完成后进行斐波那契分割，即F[n]个元素分割为前半部分F[n-1]个元素，后半部分F[n-2]个元素，\n找出要查找的元素在那一部分并递归，直到找到。")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             
@@ -343,7 +346,8 @@ class FindInterface(GalleryInterface):
         elif self.samplesLineEdit.text() == '':
             self.showMessageBox("错误","请输入要找的数字")
         else:
-            self.showMessageBox("哈希查找","内容")
+            self.showMessageBox("哈希查找","是通过计算数据元素的存储地址进行查找的一种方法，解决冲突方法有开放地址法、链地址法等。")
+            self.showMessageBox("哈希查找","是哈希查找的操作步骤：\n1:用给定的哈希函数构造哈希表；\n2:根据选择的冲突处理方法解决地址冲突；\n3:在哈希表的基础上执行哈希查找。")
             self.unableWidget()
             self.target = int(self.samplesLineEdit.text())
             

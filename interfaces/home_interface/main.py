@@ -30,14 +30,14 @@ class HomeInterface(GalleryInterface):
         cardView.addSampleCard(
             icon=FluentIcon.IOT,
             title="搜索算法",
-            content="包含广度优先搜索(BFS)和深度优先搜索(DFS)。",
+            content="搜索是对状态空间进行枚举，找到与搜索条件匹配的信息。它有很多优化方式，如减小状态空间，更改搜索顺序，剪枝等。",
             routeKey="SearchInterface",
             index=1
         )
         cardView.addSampleCard(
             icon=FluentIcon.ALBUM,
             title="查找算法",
-            content="包含顺序查找和二分查找。",
+            content="查找是在有序或无序的数据集中找到特定元素的过程。这里我们仅展示单调递增数列的部分查找算法",
             routeKey="FindInterface",
             index=1
         )

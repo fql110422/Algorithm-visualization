@@ -36,6 +36,9 @@ from interfaces.home_interface.signal_bus import signalBus
 //                           23.12.12
 '''
 
+def isWin11():
+    return sys.platform == 'win32' and sys.getwindowsversion().build >= 22000
+
 
 class mainWindow(FluentWindow):
     def __init__(self, parent=None):
@@ -96,6 +99,8 @@ class mainWindow(FluentWindow):
         self.setMinimumHeight(500)
         
         self.setWindowTitle('算法可视化')
+        
+        self.setMicaEffectEnabled(isWin11())
 
         self.setMicaEffectEnabled(True)
 
